@@ -90,12 +90,30 @@
             try
             {
                 Room roomChoice = availableRooms.First(room => room.Capacity >= occupants);
-                Reservation newReservation = new Reservation(DateTime.Now, occupants, client, roomChoice);
+                Reservation newReservation = new Reservation(DateTime.Now, occupants, client, roomChoice, DateTime.Today);
                 Reservations.Add(newReservation);
                 return newReservation;
 
             }
             catch (NullReferenceException)
+            {
+                return null;
+            }
+        }
+
+        public Reservation ReserveRoom(int clientID, int occupants, string roomNumber, DateTime reservationDate)
+        {           
+            Client client = GetClient(clientID);
+
+            try
+            {
+                Room roomChoice = Rooms.First(room => room.Number == roomNumber && room.Capacity >= occupants);
+                Reservation newReservation = new Reservation(DateTime.Now, occupants, client, roomChoice, reservationDate);
+                Reservations.Add(newReservation);
+                return newReservation;
+
+            }
+            catch(NullReferenceException)
             {
                 return null;
             }
