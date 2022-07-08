@@ -1,22 +1,24 @@
 ﻿namespace IntroToLinqNASPNETAssignment.Models
 {
-    public class Hotel
+    public static class Hotel
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public string Address { get; set; }
-        public ICollection<Room> Rooms { get; set; } = new HashSet<Room>();
-        public ICollection<Client> Clients { get; set; } = new List<Client>();
-        public ICollection<Reservation> Reservations { get; set; } = new List<Reservation>();
+        public static int Id { get; set; } = 1;
+        public static string Name { get; set; } = "Eko Atlantic";
+        public static string Address { get; set; } = "Pearls Atlantic City, Eko Blvd, Victoria Island 106104, Lagos, Nigeria";
+        public static ICollection<Room> Rooms { get; set; } = new HashSet<Room>();
+        public static ICollection<Client> Clients { get; set; } = new List<Client>();
+        public static ICollection<Reservation> Reservations { get; set; } = new List<Reservation>();
 
-        public Hotel(string name, string address)
-        {
-            Name = name;
-            Address = address;
-
+        public static void AddRoom(int number , int capacity)
+        {           
+            Rooms.Add(new Room(number,capacity));
         }
 
-        public Client GetClient(int clientID)
+        public static void RegisterClient(string name, long creditCard)
+        {
+            Clients.Add(new Client(name, creditCard));
+        }
+        public static Client GetClient(int clientID)
         {
             try
             {
@@ -29,7 +31,7 @@
             }
         }
 
-        public Reservation GetReservation(int ID)
+        public static Reservation GetReservation(int ID)
         {
             try
             {
@@ -42,7 +44,7 @@
             }
         }
 
-        public Room GetRoom(int roomNumber)
+        public static Room GetRoom(int roomNumber)
         {
             try
             {
@@ -55,7 +57,7 @@
             }
         }
         // returning a hashset of room in the function below creates a bug...discuss with Zack
-        public List<Room> GetVacantRooms()
+        public static List<Room> GetVacantRooms()
         {
             try
             {
@@ -67,7 +69,7 @@
             }
         }
 
-        public List<Client> TopThreeClients()
+        public static List<Client> TopThreeClients()
         {
             List<Client> sortedClientList = Clients.OrderBy(presentClient => presentClient.Reservations.Count).ToList();
 
@@ -83,14 +85,14 @@
 
         }
 
-        public Reservation AutomaticReservation(int clientID, int occupants)
+        public static Reservation AutomaticReservation(int clientID, int occupants)
         {
             List<Room> availableRooms = Rooms.Where(presentRoom => presentRoom.IsOccupied == false).ToList();
             Client client  = GetClient(clientID);
             try
             {
                 Room roomChoice = availableRooms.First(room => room.Capacity >= occupants);
-                Reservation newReservation = new Reservation(DateTime.Now, occupants, client, roomChoice, DateTime.Today);
+                Reservation newReservation = new Reservation( occupants, client, roomChoice, DateTime.Today);
                 Reservations.Add(newReservation);
                 return newReservation;
 
@@ -101,14 +103,14 @@
             }
         }
 
-        public Reservation ReserveRoom(int clientID, int occupants, int roomNumber, DateTime reservationDate)
+        public static Reservation ReserveRoom(int clientID, int occupants, int roomNumber, DateTime reservationDate)
         {           
             Client client = GetClient(clientID);
 
             try
             {
                 Room roomChoice = Rooms.First(room => room.Number == roomNumber && room.Capacity >= occupants);
-                Reservation newReservation = new Reservation(DateTime.Now, occupants, client, roomChoice, reservationDate);
+                Reservation newReservation = new Reservation( occupants, client, roomChoice, reservationDate);
                 Reservations.Add(newReservation);
                 return newReservation;
 
@@ -119,7 +121,7 @@
             }
         }
 
-        public void CheckIn(string clientName)
+        public static void CheckIn(string clientName)
         {
             try
             {
@@ -134,7 +136,7 @@
             }
         }
 
-        public void CheckOutRoom(int roomNumber)
+        public static void CheckOutRoom(int roomNumber)
         {
             try
             {
@@ -147,7 +149,7 @@
             }
         }
 
-        public void CheckOutRoom(string clientName)
+        public static void CheckOutRoom(string clientName)
         {
             try
             {
@@ -165,7 +167,7 @@
 
         //I am having difficulty agreeing with the questions description of a room's occupancy
         //I think TotalCapacityRemaining() looks better like this
-        public int TotalCapacityRemaining()
+        public static int TotalCapacityRemaining()
         {
             try
             {
@@ -179,7 +181,7 @@
 
         }
 
-        public int AverageOccupancyPercentage()
+        public static int AverageOccupancyPercentage()
         {
             try
             {
@@ -203,7 +205,7 @@
             }
         }
 
-        public List<Reservation> FutureBookings()
+        public static List<Reservation> FutureBookings()
         {
            
             try
@@ -214,6 +216,44 @@
             {
                 return null;
             }
+        }
+
+        static Hotel()
+        {
+            AddRoom(101, 2);
+            AddRoom(102, 2);
+            AddRoom(103, 3);
+            AddRoom(104, 3);
+            AddRoom(105, 2);
+            AddRoom(106, 4);
+            AddRoom(107, 4);
+            AddRoom(108, 2);
+            AddRoom(109, 2);
+
+            RegisterClient("Murphy", 0987000098459874);
+            RegisterClient("Imelda", 7353743674583255);
+            RegisterClient("Chimamanda", 0934618309741129);
+            RegisterClient("Santana", 8730983223096352);
+            RegisterClient("Yobo", 9764091256433398);
+
+            DateTime independenceDay = new DateTime(2022, 7, 1);
+            DateTime chritmasDay = new DateTime(2022, 12, 25);
+
+            ReserveRoom(2, 1, 108, independenceDay);
+            ReserveRoom(3, 1, 108, chritmasDay);
+            ReserveRoom(4,2, 103, DateTime.Now);
+
+            AutomaticReservation(1, 1);
+            AutomaticReservation(3, 1);
+            AutomaticReservation(5, 1);
+
+            CheckIn("Santana");
+            CheckIn("Yobo");
+
+            CheckOutRoom(103);
+
+
+
         }
 
 

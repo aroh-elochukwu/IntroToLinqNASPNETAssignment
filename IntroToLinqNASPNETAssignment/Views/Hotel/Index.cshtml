@@ -1,0 +1,13 @@
+﻿@model List<Room>
+
+    <h2>@Hotel.Name Rooms </h2>
+
+    @foreach(Room presentRoom in Model )
+    {
+        if (presentRoom.IsOccupied == true)
+        {
+            <h3>Room @presentRoom.Number</h3>
+            <p>Presently Occupied </p>
+
+        }
+    }
