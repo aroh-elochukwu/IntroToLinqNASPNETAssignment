@@ -8,6 +8,13 @@
         {
             <h3>Room @presentRoom.Number</h3>
             <p>Presently Occupied </p>
+            <p>@presentRoom.Reservations.First(reservation => reservation.StartDate == DateTime.Today)</p>
+
+        }else if (presentRoom.IsOccupied == false) 
+        {
+            <h3>Room @presentRoom.Number</h3>
+            <p>Room Vacant</p>
+            <p>Room Capacity: @presentRoom.Capacity</p>
 
         }
     }

@@ -5,7 +5,7 @@
         public static int Id { get; set; } = 1;
         public static string Name { get; set; } = "Eko Atlantic";
         public static string Address { get; set; } = "Pearls Atlantic City, Eko Blvd, Victoria Island 106104, Lagos, Nigeria";
-        public static ICollection<Room> Rooms { get; set; } = new HashSet<Room>();
+        public static ICollection<Room> Rooms { get; set; } = new List<Room>();
         public static ICollection<Client> Clients { get; set; } = new List<Client>();
         public static ICollection<Reservation> Reservations { get; set; } = new List<Reservation>();
 
@@ -229,7 +229,7 @@
             AddRoom(107, 4);
             AddRoom(108, 2);
             AddRoom(109, 2);
-
+            
             RegisterClient("Murphy", 0987000098459874);
             RegisterClient("Imelda", 7353743674583255);
             RegisterClient("Chimamanda", 0934618309741129);
@@ -238,7 +238,7 @@
 
             DateTime independenceDay = new DateTime(2022, 7, 1);
             DateTime chritmasDay = new DateTime(2022, 12, 25);
-
+            /*
             ReserveRoom(2, 1, 108, independenceDay);
             ReserveRoom(3, 1, 108, chritmasDay);
             ReserveRoom(4,2, 103, DateTime.Now);
@@ -251,6 +251,8 @@
             CheckIn("Yobo");
 
             CheckOutRoom(103);
+            */
+            
 
 
 
